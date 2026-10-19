@@ -24,4 +24,7 @@ public class ChatGptModel extends AbstractAiModel {
     public void generateResponse(String prompt, String quality, int durationSeconds) {
         System.out.println("ChatGPT [Sora]: генерую відео (" + quality + ", " + durationSeconds + " сек) за запитом: " + prompt);
     }
+
+
+
 }

@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class App {
     private String appName;
     private AbstractAiModel currentModel;
@@ -15,29 +17,29 @@ public class App {
     }
 
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
         App app = new App("Local AI Runner");
 
-        // Створюємо екземпляр ChatGPT з підтримкою перевантажених методів
-        ChatGptModel chatGpt = new ChatGptModel("ChatGPT-4o", 16, "high");
-        app.setModel(chatGpt);
+        System.out.println("Оберіть модель (1 - ChatGPT, 2 - Gemini):");
+        int choice = scanner.nextInt();
 
-        System.out.println("Запущено додаток: " + app.appName);
-        System.out.println("Обрана модель: " + app.getModel().getName() + " (" + app.getModel().getRamUsage() + " ГБ)");
+        // Динамічний вибір об'єкта під час виконання
+        if (choice == 1) {
+            app.setModel(new ChatGptModel("ChatGPT-4o", 16, "high"));
+        } else {
+            app.setModel(new GeminiModel("Gemini 1.5 Pro", 12, true));
+        }
 
-        // 1. Перевірка інкапсуляції (з минулої частини)
-        System.out.println("\nСпроба встановити некоректну пам'ять:");
-        chatGpt.setRamUsage(-4);
+        // Динамічний поліморфізм
+        System.out.println("\nПідключено: " + app.getModel().getName());
+        app.getModel().generateResponse("Поясни принципи ООП");
 
-        // 2. Демонстрація поліморфізму
-        System.out.println("\n=== Демонстрація статичного поліморфізму ===");
+        // 1Статичний поліморфізм (перевантаження, якщо вибрано ChatGPT)
+        if (app.getModel() instanceof ChatGptModel) {
+            ChatGptModel chatGpt = (ChatGptModel) app.getModel();
+            chatGpt.generateResponse("Одеса в стилі Кіберпанк", 2);
+        }
 
-        // Виклик 1: генерація тексту (1 параметр)
-        chatGpt.generateResponse("Поясни принципи ООП");
-
-        // Виклик 2: генерація фото (2 параметри)
-        chatGpt.generateResponse("Кіберпанк місто в неоні", 3);
-
-        // Виклик 3: генерація відео (3 параметри)
-        chatGpt.generateResponse("Політ над Марсом", "4K", 15);
+        scanner.close();
     }
 }
