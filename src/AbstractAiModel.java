@@ -19,7 +19,7 @@ public abstract class AbstractAiModel {
         return ramUsage;
     }
 
-    // Твій контроль за зміною даних
+    // Контроль за зміною даних
     public void setRamUsage(int ramUsage) {
         if (ramUsage > 0) {
             this.ramUsage = ramUsage;
