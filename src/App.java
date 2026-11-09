@@ -3,9 +3,12 @@ import java.util.Scanner;
 public class App {
     private String appName;
     private AbstractAiModel currentModel;
+    // Додав фабрику
+    private AbstractAiModelFactory abstractAiModelFactory;
 
-    public App(String appName) {
+    public App(String appName, AbstractAiModelFactory abstractAiModelFactory) {
         this.appName = appName;
+        this.abstractAiModelFactory = abstractAiModelFactory;
     }
 
     public void setModel(AbstractAiModel model) {
@@ -18,17 +21,17 @@ public class App {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        App app = new App("Local AI Runner");
+        // C1творюємо фабрику
+        AbstractAiModelFactory factory = new AbstractAiModelFactory();
+        App app = new App("Local AI Runner", factory);
 
         System.out.println("Оберіть модель (1 - ChatGPT, 2 - Gemini):");
         int choice = scanner.nextInt();
 
         // Динамічний вибір об'єкта під час виконання
-        if (choice == 1) {
-            app.setModel(new ChatGptModel("ChatGPT-4o", 16, "high"));
-        } else {
-            app.setModel(new GeminiModel("Gemini 1.5 Pro", 12, true));
-        }
+        // замість if-else з new просто просимо фабрику зібрати модель за номером
+        AbstractAiModel model = factory.createModel(choice);
+        app.setModel(model);
 
         // Динамічний поліморфізм
         System.out.println("\nПідключено: " + app.getModel().getName());
