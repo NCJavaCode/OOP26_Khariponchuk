@@ -4,11 +4,11 @@ public class App {
     private String appName;
     private AbstractAiModel currentModel;
     // Додаємо фабрику
-    private AbstractAiModelFactory abstractAiModelFactory;
+    private AbstractAiModelFactory aiModelFactory;
 
-    public App(String appName, AbstractAiModelFactory abstractAiModelFactory) {
+    public App(String appName, AbstractAiModelFactory aiModelFactory) {
         this.appName = appName;
-        this.abstractAiModelFactory = abstractAiModelFactory;
+        this.aiModelFactory = aiModelFactory;
     }
 
     public void setModel(AbstractAiModel model) {
@@ -21,15 +21,15 @@ public class App {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        // Cтворюємо фабрику
-        AbstractAiModelFactory factory = new AbstractAiModelFactory();
-        App app = new App("Local AI Runner", factory);
+        // Беремо єдиний екземпляр фабрики через getInstance
+        AbstractAiModelFactory factory = AbstractAiModelFactory.getInstance();
+        App app = new App("LocalAI", factory);
 
         System.out.println("Оберіть модель (1 - ChatGPT, 2 - Gemini):");
         int choice = scanner.nextInt();
 
         // Динамічний вибір об'єкта під час виконання
-        // замість if-else з new просто просимо фабрику зібрати модель за номером
+        // Замість if-else з new просто просимо фабрику зібрати модель за номером
         AbstractAiModel model = factory.createModel(choice);
         app.setModel(model);
 

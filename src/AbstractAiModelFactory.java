@@ -1,4 +1,19 @@
 public class AbstractAiModelFactory {
+    // Тут тримаємо один єдиний екземпляр фабрики на всю програму
+    private static AbstractAiModelFactory instance;
+
+    // Закриваємо конструктор, щоб не можна було зробити new AbstractAiModelFactory десь ще
+    private AbstractAiModelFactory() {
+    }
+
+    // Створюємо один раз та далі повертаємо той самий об'єкт
+    public static AbstractAiModelFactory getInstance() {
+        if (instance == null) {
+            instance = new AbstractAiModelFactory();
+        }
+        return instance;
+    }
+
     // Отримуємо цифру від користувача, та повертаємо потрібну модель
     public AbstractAiModel createModel(int choice) {
         if (choice == 1) {
